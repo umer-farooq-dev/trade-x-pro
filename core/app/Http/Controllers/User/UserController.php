@@ -15,6 +15,7 @@ class UserController extends Controller
 {
     public function home()
     {
+        return redirect(route('mobile-user.dashboard'));
         $pageTitle = 'Dashboard';
         $user      = auth()->user();
 

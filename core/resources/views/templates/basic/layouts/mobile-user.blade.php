@@ -273,7 +273,7 @@
             </li>
 
             <!-- Dropdown Example -->
-            <li class="mb-2 hover-bg">
+            {{-- <li class="mb-2 hover-bg">
                 <a href="#referralSubmenu" data-bs-toggle="collapse" class="text-white d-block py-2 px-3">
                     <img src="{{ asset('assets/mobile-user/img/sidebar/deposite.png') }}" alt="" class="icon">
                     Referral
@@ -283,7 +283,7 @@
                     <li><a href="#" class="text-white-50 d-block py-1">My Referrals</a></li>
                     <li><a href="#" class="text-white-50 d-block py-1">Referral Rewards</a></li>
                 </ul>
-            </li>
+            </li> --}}
         </ul>
     </div>
 
