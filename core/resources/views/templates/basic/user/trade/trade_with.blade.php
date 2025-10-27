@@ -587,5 +587,3 @@
     });
 </script>
 @endpush
-
-

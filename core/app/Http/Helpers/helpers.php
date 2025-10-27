@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Cache;
 
 function systemDetails()
 {
-    $system['name']          = 'tradelab';
-    $system['version']       = '2.0';
+    $system['name'] = 'tradelab';
+    $system['version'] = '2.0';
     $system['build_version'] = '4.4.1';
     return $system;
 }
@@ -43,7 +43,8 @@ function getNumber($length = 8)
     $characters = '1234567890';
     $charactersLength = strlen($characters);
     $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
+    for ($i = 0; $i < $length; $i++)
+    {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     return $randomString;
@@ -91,7 +92,8 @@ function getTrx($length = 12)
     $characters = 'ABCDEFGHJKMNOPQRSTUVWXYZ123456789';
     $charactersLength = strlen($characters);
     $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
+    for ($i = 0; $i < $length; $i++)
+    {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     return $randomString;
@@ -106,15 +108,20 @@ function getAmount($amount, $length = 2)
 function showAmount($amount, $decimal = 2, $separate = true, $exceptZeros = false)
 {
     $separator = '';
-    if ($separate) {
+    if ($separate)
+    {
         $separator = ',';
     }
     $printAmount = number_format($amount, $decimal, '.', $separator);
-    if ($exceptZeros) {
+    if ($exceptZeros)
+    {
         $exp = explode('.', $printAmount);
-        if ($exp[1] * 1 == 0) {
+        if ($exp[1] * 1 == 0)
+        {
             $printAmount = $exp[0];
-        } else {
+        }
+        else
+        {
             $printAmount = rtrim($printAmount, '0');
         }
     }
@@ -171,9 +178,12 @@ function getTemplates()
     $param['website'] = @$_SERVER['HTTP_HOST'] . @$_SERVER['REQUEST_URI'] . ' - ' . env("APP_URL");
     $url = 'https://license.viserlab.com/updates/templates/' . systemDetails()['name'];
     $response = CurlRequest::curlPostContent($url, $param);
-    if ($response) {
+    if ($response)
+    {
         return $response;
-    } else {
+    }
+    else
+    {
         return null;
     }
 }
@@ -183,7 +193,8 @@ function getPageSections($arr = false)
 {
     $jsonUrl = resource_path('views/') . str_replace('.', '/', activeTemplate()) . 'sections.json';
     $sections = json_decode(file_get_contents($jsonUrl));
-    if ($arr) {
+    if ($arr)
+    {
         $sections = json_decode(file_get_contents($jsonUrl), true);
         ksort($sections);
     }
@@ -194,10 +205,12 @@ function getPageSections($arr = false)
 function getImage($image, $size = null)
 {
     $clean = '';
-    if (file_exists($image) && is_file($image)) {
+    if (file_exists($image) && is_file($image))
+    {
         return asset($image) . $clean;
     }
-    if ($size) {
+    if ($size)
+    {
         return route('placeholder.image', $size);
     }
     return asset('assets/images/default.png');
@@ -213,7 +226,8 @@ function notify($user, $templateName, $shortCodes = null, $sendVia = null, $crea
         'currency_symbol' => $general->cur_sym,
     ];
 
-    if (gettype($user) == 'array') {
+    if (gettype($user) == 'array')
+    {
         $user = (object) $user;
     }
 
@@ -245,12 +259,17 @@ function menuActive($routeName, $type = null, $param = null)
     elseif ($type == 2) $class = 'sidebar-submenu__open';
     else $class = 'active';
 
-    if (is_array($routeName)) {
-        foreach ($routeName as $key => $value) {
+    if (is_array($routeName))
+    {
+        foreach ($routeName as $key => $value)
+        {
             if (request()->routeIs($value)) return $class;
         }
-    } elseif (request()->routeIs($routeName)) {
-        if ($param) {
+    }
+    elseif (request()->routeIs($routeName))
+    {
+        if ($param)
+        {
             $routeParam = array_values(@request()->route()->parameters ?? []);
             if (strtolower(@$routeParam[0]) == strtolower($param)) return $class;
             else return;
@@ -309,16 +328,23 @@ function showDateTime($date, $format = 'Y-m-d h:i A')
 
 function getContent($dataKeys, $singleQuery = false, $limit = null, $orderById = false)
 {
-    if ($singleQuery) {
+    if ($singleQuery)
+    {
         $content = Frontend::where('data_keys', $dataKeys)->orderBy('id', 'desc')->first();
-    } else {
+    }
+    else
+    {
         $article = Frontend::query();
-        $article->when($limit != null, function ($q) use ($limit) {
+        $article->when($limit != null, function ($q) use ($limit)
+        {
             return $q->limit($limit);
         });
-        if ($orderById) {
+        if ($orderById)
+        {
             $content = $article->where('data_keys', $dataKeys)->orderBy('id')->get();
-        } else {
+        }
+        else
+        {
             $content = $article->where('data_keys', $dataKeys)->orderBy('id', 'desc')->get();
         }
     }
@@ -328,9 +354,12 @@ function getContent($dataKeys, $singleQuery = false, $limit = null, $orderById =
 
 function gatewayRedirectUrl($type = false)
 {
-    if ($type) {
+    if ($type)
+    {
         return 'user.deposit.history';
-    } else {
+    }
+    else
+    {
         return 'user.deposit.index';
     }
 }
@@ -338,16 +367,20 @@ function gatewayRedirectUrl($type = false)
 function verifyG2fa($user, $code, $secret = null)
 {
     $authenticator = new GoogleAuthenticator();
-    if (!$secret) {
+    if (!$secret)
+    {
         $secret = $user->tsc;
     }
     $oneCode = $authenticator->getCode($secret);
     $userCode = $code;
-    if ($oneCode == $userCode) {
+    if ($oneCode == $userCode)
+    {
         $user->tv = 1;
         $user->save();
         return true;
-    } else {
+    }
+    else
+    {
         return false;
     }
 }
@@ -355,9 +388,12 @@ function verifyG2fa($user, $code, $secret = null)
 
 function urlPath($routeName, $routeParam = null)
 {
-    if ($routeParam == null) {
+    if ($routeParam == null)
+    {
         $url = route($routeName);
-    } else {
+    }
+    else
+    {
         $url = route($routeName, $routeParam);
     }
     $basePath = route('home');
@@ -383,25 +419,32 @@ function getRealIP()
 {
     $ip = $_SERVER["REMOTE_ADDR"];
     //Deep detect ip
-    if (filter_var(@$_SERVER['HTTP_FORWARDED'], FILTER_VALIDATE_IP)) {
+    if (filter_var(@$_SERVER['HTTP_FORWARDED'], FILTER_VALIDATE_IP))
+    {
         $ip = $_SERVER['HTTP_FORWARDED'];
     }
-    if (filter_var(@$_SERVER['HTTP_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
+    if (filter_var(@$_SERVER['HTTP_FORWARDED_FOR'], FILTER_VALIDATE_IP))
+    {
         $ip = $_SERVER['HTTP_FORWARDED_FOR'];
     }
-    if (filter_var(@$_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
+    if (filter_var(@$_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP))
+    {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
-    if (filter_var(@$_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)) {
+    if (filter_var(@$_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP))
+    {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
     }
-    if (filter_var(@$_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)) {
+    if (filter_var(@$_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP))
+    {
         $ip = $_SERVER['HTTP_X_REAL_IP'];
     }
-    if (filter_var(@$_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP)) {
+    if (filter_var(@$_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP))
+    {
         $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
     }
-    if ($ip == '::1') {
+    if ($ip == '::1')
+    {
         $ip = '127.0.0.1';
     }
 
@@ -428,7 +471,8 @@ function dateSorting($arr)
 function gs()
 {
     $general = Cache::get('GeneralSetting');
-    if (!$general) {
+    if (!$general)
+    {
         $general = GeneralSetting::first();
         Cache::put('GeneralSetting', $general);
     }
@@ -438,9 +482,9 @@ function gs()
 function getCoinRate($coinId)
 {
 
-    $url        = 'https://min-api.cryptocompare.com/data/price?fsym=' . $coinId . '&tsyms=USD&api_key=7d6ee2772116fe4b10034d7dd6d377193fdc6b6156470620d7d1fc82f4a13e90';
-    $crypto     = file_get_contents($url);
-    $usd        = json_decode($crypto, true);
+    $url = 'https://min-api.cryptocompare.com/data/price?fsym=' . $coinId . '&tsyms=USD&api_key=7d6ee2772116fe4b10034d7dd6d377193fdc6b6156470620d7d1fc82f4a13e90';
+    $crypto = file_get_contents($url);
+    $usd = json_decode($crypto, true);
     $cryptoRate = $usd['USD'];
 
     return $cryptoRate;
@@ -449,41 +493,65 @@ function getCoinRate($coinId)
 function referralCommission($user, $amount)
 {
     $referBy = User::where('id', $user->ref_by)->first();
-    if ($referBy) {
-        $gs    = gs();
+    if ($referBy)
+    {
+        $gs = gs();
         $bonus = (($amount * $gs->referral_bonus) / 100);
 
-        if ($bonus > 0) {
+        if ($bonus > 0)
+        {
 
             $referBy->balance += $bonus;
             $referBy->save();
 
             $details = "Commission From " . $user->username . " for Deposit.";
 
-            $commission               = new Commission();
-            $commission->user_id      = $referBy->id;
+            $commission = new Commission();
+            $commission->user_id = $referBy->id;
             $commission->from_user_id = $user->id;
-            $commission->amount       = $bonus;
-            $commission->details      = $details;
+            $commission->amount = $bonus;
+            $commission->details = $details;
             $commission->post_balance = $referBy->balance;
-            $commission->trx          = getTrx();
+            $commission->trx = getTrx();
             $commission->save();
 
-            $transaction               = new Transaction();
-            $transaction->user_id      = $referBy->id;
-            $transaction->amount       = $bonus;
+            $transaction = new Transaction();
+            $transaction->user_id = $referBy->id;
+            $transaction->amount = $bonus;
             $transaction->post_balance = getAmount($referBy->balance);
-            $transaction->trx_type     = '+';
-            $transaction->details      = $details;
-            $transaction->trx          = getTrx();
+            $transaction->trx_type = '+';
+            $transaction->details = $details;
+            $transaction->trx = getTrx();
             $transaction->save();
 
-            notify($referBy, 'COMMISSION_BONUS',[
-                'amount'       => $commission->amount,
+            notify($referBy, 'COMMISSION_BONUS', [
+                'amount' => $commission->amount,
                 'main_balance' => $referBy->balance,
-                'trx'          => $commission->trx,
-                'full_name'    => $user->full_name
+                'trx' => $commission->trx,
+                'full_name' => $user->full_name
             ]);
         }
     }
+}
+
+// number_format_short(213123123123.12312, 2)
+function number_format_short($number, $decimals = 2)
+{
+    // Define thresholds in descending order
+    $units = [
+        'T' => 1000000000000, // Trillion
+        'B' => 1000000000,    // Billion
+        'M' => 1000000,       // Million
+        'K' => 1000,          // Thousand
+    ];
+
+    foreach ($units as $suffix => $value)
+    {
+        if (abs($number) >= $value)
+        {
+            return number_format($number / $value, $decimals) . $suffix;
+        }
+    }
+
+    return number_format($number, $decimals);
 }
