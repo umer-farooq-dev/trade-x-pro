@@ -133,19 +133,21 @@
     <div id="quick-links" class="text-center">
         @php
             $links = [
-                ['img' => 'finance.png', 'title' => 'Finance'],
-                ['img' => 'options.png', 'title' => 'Option'],
-                ['img' => 'publication.png', 'title' => 'Publication'],
-                ['img' => 'share.png', 'title' => 'Share'],
-                ['img' => 'chat.png', 'title' => 'Chat'],
+                ['img' => 'finance.png', 'title' => 'Finance', 'route' => 'mobile-user.crypto'],
+                ['img' => 'options.png', 'title' => 'Option', 'route' => 'mobile-user.chart'],
+                ['img' => 'publication.png', 'title' => 'Publication', 'route' => 'mobile-user.publication'],
+                ['img' => 'share.png', 'title' => 'Share', 'route' => 'mobile-user.referral'],
+                ['img' => 'chat.png', 'title' => 'Chat', 'route' => 'mobile-user.chat'],
             ];
         @endphp
         @foreach($links as $link)
             <div class="card-container">
                 <div class="card bg-none border-0">
                     <div class="card-body bg-none text-center">
-                        <img src="{{ asset('assets/mobile-user/img/' . $link['img']) }}" alt="{{ $link['title'] }}">
-                        <p class="fw-normal text-white mt-1">{{ $link['title'] }}</p>
+                        <a href="{{ route($link['route'] ?? 'mobile-user.dashboard') }}" class="d-contents text-decoration-none">
+                            <img src="{{ asset('assets/mobile-user/img/' . $link['img']) }}" alt="{{ $link['title'] }}">
+                            <p class="fw-normal text-white mt-1">{{ $link['title'] }}</p>
+                        </a>
                     </div>
                 </div>
             </div>

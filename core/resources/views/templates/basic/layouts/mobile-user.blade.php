@@ -157,9 +157,9 @@
             background-color: rgba(255, 255, 255, 0.1);
             transition: 0.2s;
         }
-
-        #sidebar {
+#sidebar {
             transition: var(--sidebar-trasition-time);
+            height: calc(100% - var(--menu-height));
         }
 
         #sidebar a {
@@ -167,7 +167,6 @@
         }
 
         #sidebar ul.links {
-            max-height: 70%;
             overflow-y: auto
         }
 
@@ -183,7 +182,6 @@
             width: 20px;
             margin-right: 10px;
         }
-
         #menu {
             position: fixed;
             bottom: 0;
@@ -226,143 +224,26 @@
     @php
         $currentRoute = Route::currentRouteName();
     @endphp
-    <div id="navbar">
+    <div id="navbar" style="">
         @hasSection('navbar')
             @yield('navbar')
         @else
-            <ul>
-                <li style="width: 15%;">
-                    <img src="{{ asset('assets/mobile-user/img/topbar/user.png') }}" alt="User Icon" width="30px"
-                        id="toggleSidebar" />
-                </li>
-                <li style="width: 70%;">
-                    <h4 class="mb-0 text-white" style="letter-spacing: 5px;">
-                        TradeExpro
-                    </h4>
-                </li>
-                <li style="width: 15%;">
-                    <img src="{{ asset('assets/mobile-user/img/topbar/bell.png') }}" alt="Menu Icon" width="25px" />
-                </li>
-            </ul>
+            @include('templates.basic.partials.mobile_header')
         @endif
     </div>
-    <!-- Sidebar -->
-    <div id="sidebar" class="bg-custom-primary vh-100 position-fixed top-0 p-0 pt-3"
-        style="width: 80%;left:-100%; z-index:1050;">
-        <div class="user-details text-center mb-4 mt-2">
-            <img src="{{ asset('assets/images/default.png') }}" alt="Avatar" class="rounded-circle mb-2" width="100"
-                height="100">
-            <h5 class="fw-bold mb-0 text-custom-primary-dark">Hello, <span class="name">Mudassir Ameen</span></h5>
-            <h6 class="text-secondary mt-2">UUID: <span class="uuid">675395</span>
-                <img src="{{ asset('assets/mobile-user/img/copy.png') }}" alt="Copy" width="15" id="copyUUIDbutton">
-            </h6>
-        </div>
 
-        <ul class="list-unstyled links">
-            <li class="mb-2 hover-bg {{ $currentRoute == 'mobile-user.trade-logs' ? 'active' : '' }}">
-                <a href="{{ route('mobile-user.trade-logs') }}" class="text-white d-block py-2 px-3">
-                    {{-- <img src="{{ asset('assets/mobile-user/img/sidebar/.png') }}" alt="" class="icon"> --}}
-                    Trading Logs
-                </a>
-            </li>
-            <li class="mb-2 hover-bg {{ $currentRoute == 'mobile-user.withdraw' ? 'active' : '' }}">
-                <a href="{{ route('mobile-user.withdraw') }}" class="text-white d-block py-2 px-3">
-                    {{-- <img src="{{ asset('assets/mobile-user/img/sidebar/deposite.png') }}" alt="" class="icon"> --}}
-                    Withdraw
-                </a>
-            </li>
-
-            <!-- Dropdown Example -->
-            {{-- <li class="mb-2 hover-bg">
-                <a href="#referralSubmenu" data-bs-toggle="collapse" class="text-white d-block py-2 px-3">
-                    <img src="{{ asset('assets/mobile-user/img/sidebar/deposite.png') }}" alt="" class="icon">
-                    Referral
-                    <i class="las la-angle-down float-end"></i>
-                </a>
-                <ul class="collapse list-unstyled ps-3" id="referralSubmenu">
-                    <li><a href="#" class="text-white-50 d-block py-1">My Referrals</a></li>
-                    <li><a href="#" class="text-white-50 d-block py-1">Referral Rewards</a></li>
-                </ul>
-            </li> --}}
-        </ul>
-    </div>
-
-    <!-- Overlay -->
-    <div id="sidebar-overlay" style=" position:fixed; top:0; left:-100%; width:100%; height:100%;
-         background:rgba(0,0,0,.5); z-index:1049; transition: var(--sidebar-transition-time);">
-    </div>
-
-    <div id="menu">
-        <ul>
-            <li>
-                <a href="{{ route('mobile-user.dashboard') }}" class="d-flex flex-column align-items-center">
-                    <img src="{{  asset('assets/mobile-user/img/menu/home' . ($currentRoute == 'mobile-user.dashboard' ? '-a' : '') . '.png') }}"
-                        alt="Home Image" />
-                    <span>Home</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('mobile-user.crypto') }}" class="d-flex flex-column align-items-center">
-                    <img src="{{  asset('assets/mobile-user/img/menu/trade' . ($currentRoute == 'mobile-user.crypto' ? '-a' : '') . '.png') }}"
-                        alt="Trade Image" />
-                    <span>Trade</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('mobile-user.chart') }}"
-                    class="d-flex flex-column align-items-center {{ $currentRoute == 'mobile-user.chart' ? 'text-info' : '' }}">
-                    <img src="{{  asset('assets/mobile-user/img/menu/option.png') }}" alt="Option Image" />
-                    <span>Option</span>
-                </a>
-            </li>
-            <li>
-                <a href="" class="d-flex flex-column align-items-center">
-                    <img src="{{  asset('assets/mobile-user/img/menu/trust.png') }}" alt="Trust Image" />
-                    <span>Trust</span>
-                </a>
-            </li>
-            <li>
-                <a href="" class="d-flex flex-column align-items-center">
-                    <img src="{{  asset('assets/mobile-user/img/menu/assets.png') }}" alt="Assets Image" />
-                    <span>Assets</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    @include('templates.basic.partials.mobile_sidebar')
 
     <div class="container @yield('container-class', 'p-3')">
         @yield('content')
     </div>
     @include('partials.notify')
 
-    <div style="height: var(--menu-height)"></div>
+    @include('templates.basic.partials.mobile_menu')
+
     {{-- Default Js for all pages --}}
     <script src="{{asset('assets/global/js/jquery-3.6.0.min.js')}}"></script>
     <script src="{{asset('assets/global/js/bootstrap.bundle.min.js')}}"></script>
-    <script>
-        $(document).ready(function () {
-            $('#toggleSidebar').on('click', function () {
-                $('#sidebar, #sidebar-overlay').css('left', 0);
-            });
-            $('#sidebar-overlay').on('click', function () {
-                $('#sidebar, #sidebar-overlay').css('left', '-100%');
-            });
-            $("#copyUUIDbutton").on('click', function () {
-                let textArea = document.createElement('textarea');
-                let uuidSpan = $(this).closest('.user-details').find('.uuid');
-                let uuid = uuidSpan.text();
-                textArea.value = uuid;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                uuidSpan.text('Copied!');
-                setTimeout(() => {
-                    uuidSpan.text(uuid);
-                }, 3000);
-            });
-        });
-    </script>
     @stack('scripts')
 </body>
 

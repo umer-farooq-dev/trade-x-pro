@@ -35,6 +35,5 @@
         (function ($) {
             $('.form-control').addClass('cmn--form--control');
         })(jQuery);
-
     </script>
 @endpush
