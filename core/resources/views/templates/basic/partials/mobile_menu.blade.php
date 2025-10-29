@@ -2,7 +2,7 @@
     <ul>
         <li>
             <a href="{{ route('mobile-user.dashboard') }}" class="d-flex flex-column align-items-center">
-                <img src="{{  asset('assets/mobile-user/img/menu/home' . ($currentRoute == 'mobile-user.dashboard' ? '-a' : '') . '.png') }}"
+                <img src="{{  asset('assets/mobile-user/img/menu/home' . ( in_array($currentRoute, ['mobile-user.dashboard', 'home']) ? '-a' : '') . '.png') }}"
                     alt="Home Image" />
                 <span>Home</span>
             </a>

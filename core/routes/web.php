@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\MobileUserInterfaceController;
 use App\Lib\CurlRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +40,8 @@ Route::controller('SiteController')->group(function () {
     Route::get('policy/{slug}/{id}', 'policyPages')->name('policy.pages');
     Route::get('placeholder-image/{size}', 'placeholderImage')->name('placeholder.image');
     Route::get('/{slug}', 'pages')->name('pages');
-    Route::get('/', 'index')->name('home');
+    // Route::get('/', 'index')->name('home');
+    Route::get('/', [MobileUserInterfaceController::class, 'index'])->name('home');
 });
 
 require __DIR__ . '/mobile-user.php';

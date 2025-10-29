@@ -144,7 +144,7 @@
             <div class="card-container">
                 <div class="card bg-none border-0">
                     <div class="card-body bg-none text-center">
-                        <a href="{{ route($link['route'] ?? 'mobile-user.dashboard') }}" class="d-contents text-decoration-none">
+                        <a href="{{ route($link['route']) }}" class="d-contents text-decoration-none">
                             <img src="{{ asset('assets/mobile-user/img/' . $link['img']) }}" alt="{{ $link['title'] }}">
                             <p class="fw-normal text-white mt-1">{{ $link['title'] }}</p>
                         </a>

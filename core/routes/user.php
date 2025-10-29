@@ -60,7 +60,7 @@ Route::middleware('auth')->name('user.')->group(function ()
             Route::controller('UserController')->group(function ()
             {
                 // Route::get('dashboard', 'home')->name('home');
-                Route::redirect('dashboard', '/mobile/dashboard')->name('home');
+                Route::redirect('dashboard', '/')->name('home');
 
                 //2FA
                 // Route::get('twofactor', 'show2faForm')->name('twofactor');
@@ -128,7 +128,8 @@ Route::middleware('auth')->name('user.')->group(function ()
 
             Route::controller("TradeController")->name('trade.')->prefix('trade')->group(function ()
             {
-                Route::get('/', 'index')->name('index');
+                // Route::get('/', 'index')->name('index');
+                Route::redirect('/', '/mobile/cryptos')->name('index');
                 // Route::get('log', 'tradeLog')->name('log');
                 Route::redirect('log', '/mobile/trade/logs')->name('log');
                 // Route::get('wining/log', 'winingTradeLog')->name('wining.log');
@@ -157,7 +158,7 @@ Route::middleware('auth')->name('user.')->group(function ()
         });
 
         // Payment
-        Route::prefix('deposit')->name('deposit.')->controller('Gateway\PaymentController')->group(function ()
+        Route::middleware('registration.complete')->prefix('deposit')->name('deposit.')->controller('Gateway\PaymentController')->group(function ()
         {
             // Route::any('/', 'deposit')->name('index');
             Route::redirect('/', '/mobile/deposit')->name('index');

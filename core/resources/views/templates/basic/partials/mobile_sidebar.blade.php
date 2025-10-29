@@ -1,14 +1,17 @@
 <!-- Sidebar -->
-<div id="sidebar" class="bg-custom-primary position-fixed top-0 p-0 pt-3" style="width: 80%;left:-100%; z-index:1050;">
-    <div class="user-details text-center mt-2" style="height: 25%; overflow-y: auto;">
-        <img src="{{ asset('assets/images/default.png') }}" alt="Avatar" class="rounded-circle mb-2" width="100"
-            height="100">
-        <h5 class="fw-bold mb-0 text-custom-primary-dark">Hello, <span
-                class="name">{{ Str::limit(Auth::user()->firstname . ' ' . Auth::user()->lastname, 30)}}</span></h5>
-        <h6 class="text-secondary mt-2">@lang('UID'): <span class="uuid">{{ auth()->user()->id }}</span>
-            <img src="{{ asset('assets/mobile-user/img/copy.png') }}" alt="Copy" width="15" id="copyUUIDbutton">
-        </h6>
-    </div>
+<div id="sidebar" class="bg-custom-primary position-fixed top-0 p-0 pt-3 d-flex justify-content-between flex-column"
+    style="width: 80%;left:-100%; z-index:1050;">
+    @if (Auth::check())
+        <div class="user-details text-center mt-2" style="height: {{ Auth::check() ? '25%' : 'unset' }}; overflow-y: auto;">
+            <img src="https://ui-avatars.com/api/?name={{ Auth::user()?->firstname . ' ' . Auth::user()?->lastname }}"
+                alt="Avatar" class="rounded-circle mb-2" width="100" height="100">
+            <h5 class="fw-bold mb-0 text-custom-primary-dark">Hello, <span
+                    class="name">{{ Str::limit(Auth::user()?->firstname . ' ' . Auth::user()?->lastname, 30)}}</span></h5>
+            <h6 class="text-secondary mt-2">@lang('UID'): <span class="uuid">{{ auth()->user()?->id }}</span>
+                <img src="{{ asset('assets/mobile-user/img/copy.png') }}" alt="Copy" width="15" id="copyUUIDbutton">
+            </h6>
+        </div>
+    @endif
 
     <ul class="list-unstyled links" style="height:60%">
         <li class="mb-2 hover-bg {{ $currentRoute == 'mobile-user.trade-logs' ? 'active' : '' }}">
@@ -118,10 +121,17 @@
 
     <ul class="list-unstyled links" style="height:10%;">
         <li class="mb-2 hover-bg">
-            <a href="{{ route('user.logout') }}" class="text-white d-block py-2 px-3">
-                <i class="las la-sign-out-alt icon text-custom-primary"></i>
-                Logout
-            </a>
+            @if (Auth::check())
+                <a href="{{ route('user.logout') }}" class="text-white d-block py-2 px-3">
+                    <i class="las la-sign-out-alt icon text-custom-primary"></i>
+                    Logout
+                </a>
+            @else
+                <a href="{{ route('user.login') }}" class="text-white d-block py-2 px-3">
+                    <i class="las la-sign-in-alt icon text-custom-primary"></i>
+                    Login
+                </a>
+            @endif
         </li>
     </ul>
 </div>

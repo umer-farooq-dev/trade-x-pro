@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\SiteController;
 use App\Models\User;
 use App\Models\Deposit;
 use App\Models\TradeLog;
@@ -20,6 +21,9 @@ class MobileUserInterfaceController extends Controller
 {
     public function index()
     {
+        // if (!str_contains(request()->header('user-agent'), 'Mobile')) {
+        //     return (new SiteController())->index();
+        // }
         $cryptos = CryptoCurrency::active()->get();
         return view('mobile.user.dashboard', compact('cryptos'));
     }
