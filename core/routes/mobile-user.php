@@ -10,6 +10,9 @@ Route::group(['prefix' => 'mobile', 'middleware' => 'auth'], function ()
         Route::get('transactions', 'transactions')->name('transactions'); // Redirected
         Route::any('deposit/history', 'depositHistory')->name('deposit.history'); // Redirected
 
+        Route::get('kyc-form', 'kycForm')->name('kyc.form'); // Redirected
+        Route::get('kyc-data', 'kycData')->name('kyc.data'); // Redirected
+
         Route::get('profile-setting', 'profile')->name('profile.setting'); // Redirected
         Route::get('change-password', 'changePassword')->name('change.password'); // Redirected
 
@@ -36,7 +39,7 @@ Route::group(['prefix' => 'mobile', 'middleware' => 'auth'], function ()
         Route::group([
             'prefix' => 'deposit',
             'as' => 'deposit.',
-            'middleware' => 'registration.complete'
+            // 'middleware' => 'registration.complete'
         ], function ()
         {
             Route::any('/', 'deposit')->name('index');
@@ -54,6 +57,7 @@ Route::group(['prefix' => 'mobile', 'middleware' => 'auth'], function ()
         Route::get('chat', 'chat')->name('chat'); // New Route
     });
 });
+
 Route::get('/ws-proxy/kline/{symbol}/{interval}', function ($symbol, $interval)
 {
     return response()->json([

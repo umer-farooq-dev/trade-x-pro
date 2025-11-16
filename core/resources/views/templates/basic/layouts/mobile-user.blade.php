@@ -237,13 +237,13 @@
     <div class="container @yield('container-class', 'p-3')">
         @yield('content')
     </div>
-    @include('partials.notify')
 
     @include('templates.basic.partials.mobile_menu')
 
     {{-- Default Js for all pages --}}
     <script src="{{asset('assets/global/js/jquery-3.6.0.min.js')}}"></script>
     <script src="{{asset('assets/global/js/bootstrap.bundle.min.js')}}"></script>
+    @include('partials.notify')
     @stack('scripts')
 </body>
 

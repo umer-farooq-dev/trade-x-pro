@@ -28,6 +28,30 @@
         </li>
 
         <li class="mb-2 hover-bg">
+            <a href="#kycDropdown" data-bs-toggle="collapse" class="text-white d-block py-2 px-3"
+                data-expended="{{ in_array($currentRoute, ['mobile-user.kyc.form', 'mobile-user.kyc.data']) ? 'true' : 'false' }}">
+                KYC
+                <i class="las la-angle-down float-end"></i>
+            </a>
+            <ul class="collapse list-unstyled ps-3 {{ in_array($currentRoute, ['mobile-user.kyc.form', 'mobile-user.kyc.data']) ? 'show' : '' }}"
+                id="kycDropdown">
+                @if (!auth()->user()->kycUnverified())
+                    <li class="{{ $currentRoute == 'mobile-user.kyc.form' ? 'active' : '' }}">
+                        <a href="{{ route('mobile-user.kyc.form') }}" class="text-white-50 d-block py-1">
+                            Complete KYC
+                        </a>
+                    </li>
+                @else
+                    <li class="{{ $currentRoute == 'mobile-user.kyc.data' ? 'active' : '' }}">
+                        <a href="{{ route('mobile-user.kyc.data') }}" class="text-white-50 d-block py-1">
+                            KYC Info
+                        </a>
+                    </li>
+                @endif
+            </ul>
+        </li>
+
+        <li class="mb-2 hover-bg">
             <a href="#withdrawDropdown" data-bs-toggle="collapse" class="text-white d-block py-2 px-3"
                 data-expended="{{ in_array($currentRoute, ['mobile-user.withdraw', 'mobile-user.withdraw.history']) ? 'true' : 'false' }}">
                 Withdraw

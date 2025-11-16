@@ -69,8 +69,10 @@ Route::middleware('auth')->name('user.')->group(function ()
                 Route::post('twofactor/disable', 'disable2fa')->name('twofactor.disable');
 
                 //KYC
-                Route::get('kyc-form', 'kycForm')->name('kyc.form');
-                Route::get('kyc-data', 'kycData')->name('kyc.data');
+                // Route::get('kyc-form', 'kycForm')->name('kyc.form');
+                Route::redirect('kyc-form', '/mobile/kyc-form')->name('kyc.form');
+                // Route::get('kyc-data', 'kycData')->name('kyc.data');
+                Route::redirect('kyc-data', '/mobile/kyc-data')->name('kyc.data');
                 Route::post('kyc-submit', 'kycSubmit')->name('kyc.submit');
 
                 //Report
@@ -158,7 +160,8 @@ Route::middleware('auth')->name('user.')->group(function ()
         });
 
         // Payment
-        Route::middleware('registration.complete')->prefix('deposit')->name('deposit.')->controller('Gateway\PaymentController')->group(function ()
+        // Route::middleware('registration.complete')->prefix('deposit')->name('deposit.')->controller('Gateway\PaymentController')->group(function ()
+        Route::prefix('deposit')->name('deposit.')->controller('Gateway\PaymentController')->group(function ()
         {
             // Route::any('/', 'deposit')->name('index');
             Route::redirect('/', '/mobile/deposit')->name('index');

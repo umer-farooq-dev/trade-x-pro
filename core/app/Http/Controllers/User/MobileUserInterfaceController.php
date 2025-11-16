@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\SiteController;
+use App\Models\Form;
 use App\Models\User;
 use App\Models\Deposit;
 use App\Models\TradeLog;
@@ -16,6 +16,7 @@ use App\Models\WithdrawMethod;
 use App\Models\GatewayCurrency;
 use App\Lib\GoogleAuthenticator;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SiteController;
 
 class MobileUserInterfaceController extends Controller
 {
@@ -164,6 +165,28 @@ class MobileUserInterfaceController extends Controller
             $gate->where('status', Status::ENABLE);
         })->with('method')->orderby('method_code')->get();
         return view('mobile.user.deposit.index', compact('gatewayCurrency'));
+    }
+
+    public function kycForm()
+    {
+        if (auth()->user()->kv == 2)
+        {
+            $notify[] = ['error', 'Your KYC is under review'];
+            return to_route('mobile-user.dashboard')->withNotify($notify);
+        }
+        if (auth()->user()->kv == 1)
+        {
+            $notify[] = ['error', 'You are already KYC verified'];
+            return to_route('mobile-user.dashboard')->withNotify($notify);
+        }
+        $form = Form::where('act', 'kyc')->first();
+        return view('mobile.user.kyc.form', compact('form'));
+    }
+
+    public function kycData()
+    {
+        $user = auth()->user();
+        return view('mobile.user.kyc.data', compact('user'));
     }
     public function manualDepositConfirm()
     {
