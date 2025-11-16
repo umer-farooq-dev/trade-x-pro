@@ -87,7 +87,7 @@
     <div id="banners-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
         <div class="carousel-inner">
             <div class="carousel-item active banner-item-carousel">
-                <img src="{{ asset('assets/images/frontend/blog/63f34173307941676886387.jpg') }}" alt="Image 1">
+                <img src="{{ asset('assets/mobile-user/img/banners/1.jpeg') }}" alt="Image 1">
             </div>
             <div class="carousel-item banner-item-carousel">
                 <img src="{{ asset('assets/images/frontend/blog/63f34273c29a21676886643.jpg') }}" alt="Image 2">
